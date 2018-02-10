@@ -49,6 +49,15 @@ namespace Word_Search_Solver
                 Console.WriteLine("Write target words to find, separated by commas or white spaces: ");
                 string[] targetWords = Console.ReadLine().Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
+                char[,] resultMatrix =  Solution.mainAlgorythm(Matrix, targetWords);
+
+                Console.WriteLine("Result matrix:");
+                for (int i = 0; i < rowNumber; i++)
+                {
+                    for (int j = 0; j < columnNumber; j++)
+                        Console.Write(resultMatrix[i,j]);
+                    Console.WriteLine();
+                 }       
 
 
             }
