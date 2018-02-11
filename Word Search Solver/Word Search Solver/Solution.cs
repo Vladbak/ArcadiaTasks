@@ -85,11 +85,11 @@ namespace Word_Search_Solver
 
                     for (int k=0; k< targetWords.Length; k++)
                     {
-                        if (Matrix[i,j].Equals(firstLetters[k]))
-                            lookInClosestTiles(position, targetWords[k], true);
-                        
+                        if (Matrix[i, j].Equals(firstLetters[k]))
+                            lookInClosestTiles(Matrix, ref resultMatrix, position, targetWords[k], true);
+
                         if (Matrix[i, j].Equals(lastLetters[k]))
-                            lookInClosestTiles(position, targetWords[k], false);
+                            lookInClosestTiles(Matrix, ref resultMatrix, position, targetWords[k], false);
                     }
                 }
             }
@@ -103,10 +103,12 @@ namespace Word_Search_Solver
         /// calls findWord method for searching in that directions
         /// and? if it finds word, writes word into result matrix
         /// </summary>
+        /// <param name="Matrix">          matrix of letters  </param>
+        /// <param name="resultMatrix">    matrix, which contains only target words and '+' in other positions </param>
         /// <param name="position">        cell from which we start searching </param>
         /// <param name="targetWord">      word, which we a looking for </param>
         /// <param name="isFirstLetter">   determine, whether we are searching for straight word(true) or its reverse version(false)    </param>
-        static public void lookInClosestTiles(Position position, string targetWord, bool isFirstLetter)
+        static public void lookInClosestTiles(char[,] Matrix, ref char[,] resultMatrix,  Position position, string targetWord, bool isFirstLetter)
         {
               /*
             those arrays contain flags, determing in which direction of axis movement will be,
@@ -120,9 +122,9 @@ namespace Word_Search_Solver
             {
                 Delta delta = new Delta(dHorizontalValues[i], dVerticalValues[i]);
 
-                if (findWord(delta, position, targetWord, isFirstLetter))
+                if (findWord(Matrix, delta, position, targetWord, isFirstLetter))
                 {
-                    insertWordInResultMatrix(delta, position, targetWord, isFirstLetter);
+                    insertWordInResultMatrix(ref resultMatrix, delta, position, targetWord, isFirstLetter);
                     return;
                 }
 
@@ -133,11 +135,12 @@ namespace Word_Search_Solver
         /// <summary>
         /// this methos insert found word (symbol by symbol) into result matrix
         /// </summary>
+        /// <param name="resultMatrix">    matrix, which contains only target words and '+' in other positions </param>
         /// <param name="delta">           struct, contains direction for inserting word  </param>
         /// <param name="position">        cell from which we start inserting </param>
         /// <param name="targetWord">      word, which we a inserting </param>
         /// <param name="isFirstLetter">   determine, whether we are inserting straight word(true) or its reverse version(false)    </param>
-        static public void insertWordInResultMatrix(Delta delta, Position position, string targetWord, bool isFirstLetter)
+        static public void insertWordInResultMatrix(ref char[,] resultMatrix, Delta delta, Position position, string targetWord, bool isFirstLetter)
         {
             if (!isFirstLetter)
                 targetWord.Reverse();
@@ -155,12 +158,13 @@ namespace Word_Search_Solver
         /// <summary>
         /// This method is checking letters on 1 of 8 possible direction(N, NW, W, SW, S, SE, E, NE), whether they match for target word
         /// </summary>
-        /// <param name="delta"> struct, contains direction for moving and searching through matrix  </param>
+        /// <param name="Matrix">          matrix of letters  </param>
+        /// <param name="delta">           struct, contains direction for moving and searching through matrix  </param>
         /// <param name="position">        cell from which we start searching </param>
         /// <param name="targetWord">      word, which we a looking for </param>
         /// <param name="isFirstLetter">   determine, whether we are searching for straight word(true) or its reverse version(false)    </param>
         /// <returns> true, if method has found word, otherwise returns false </returns>
-        static public bool findWord(Delta delta, Position position, string targetWord, bool isFirstLetter)
+        static public bool findWord(char[,] Matrix, Delta delta, Position position, string targetWord, bool isFirstLetter)
         {
             
             int index, step, countFoundLetters=0;
