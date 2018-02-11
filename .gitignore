@@ -1,0 +1,4 @@
+# this file is holded in master branch and this branch should not contain anything but README and this gitignore file
+*
+!.gitignore
+!README.md
