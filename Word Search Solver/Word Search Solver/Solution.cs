@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Word_Search_Solver
 {
-   static class Solution
+    public static class Solution
     {
-        struct Position
+        public struct Position
         {
            public int x, y;
            public int Max_x, Max_y, Min_x, Min_y;
@@ -25,7 +25,7 @@ namespace Word_Search_Solver
 
         }
 
-        struct Delta
+        public struct Delta
         {
             public int Horizontal, Vertical;
             public Delta(int h, int v)
@@ -35,7 +35,7 @@ namespace Word_Search_Solver
             }
         }
 
-        static char[,] Matrix, resultMatrix;
+        
 
         /// <summary>
         /// This is main method in which we are taking every letter, looking if some of the target words has it 
@@ -45,18 +45,17 @@ namespace Word_Search_Solver
         /// <param name="targetWords"> string array of words to find in Matrix</param>
         static public char[,] mainAlgorythm(char[,] Matrix, string[] targetWords)
         {
+
             //here we get sizes of our Matrix
             int matrixHorizSize = Matrix.GetUpperBound(0) + 1;
             int matrixVertSize = Matrix.GetUpperBound(1) + 1;
 
-            resultMatrix = new char[matrixHorizSize, matrixVertSize];
+            char[,] resultMatrix = new char[matrixHorizSize, matrixVertSize];
             for (int i = 0; i < matrixHorizSize; i++)
                 for (int j = 0; j < matrixVertSize; j++)
                     resultMatrix[i, j] = '+';
 
             
-
-            Solution.Matrix = Matrix;
             Position position = new Position();
             position.Min_x = 0;
             position.Min_y = 0;
@@ -90,7 +89,7 @@ namespace Word_Search_Solver
                             lookInClosestTiles(position, targetWords[k], true);
                         
                         if (Matrix[i, j].Equals(lastLetters[k]))
-                            lookInClosestTiles(position, targetWords[k], true);
+                            lookInClosestTiles(position, targetWords[k], false);
                     }
                 }
             }
@@ -100,13 +99,14 @@ namespace Word_Search_Solver
         }
 
         /// <summary>
-        /// this method is creating 8 delta-structures for 8 directions
-        /// and calling findWord method for searching in that directions
+        /// this method creates 8 delta-structures for 8 directions,
+        /// calls findWord method for searching in that directions
+        /// and? if it finds word, writes word into result matrix
         /// </summary>
         /// <param name="position">        cell from which we start searching </param>
         /// <param name="targetWord">      word, which we a looking for </param>
         /// <param name="isFirstLetter">   determine, whether we are searching for straight word(true) or its reverse version(false)    </param>
-        static void lookInClosestTiles(Position position, string targetWord, bool isFirstLetter)
+        static public void lookInClosestTiles(Position position, string targetWord, bool isFirstLetter)
         {
               /*
             those arrays contain flags, determing in which direction of axis movement will be,
@@ -137,7 +137,7 @@ namespace Word_Search_Solver
         /// <param name="position">        cell from which we start inserting </param>
         /// <param name="targetWord">      word, which we a inserting </param>
         /// <param name="isFirstLetter">   determine, whether we are inserting straight word(true) or its reverse version(false)    </param>
-        static void insertWordInResultMatrix(Delta delta, Position position, string targetWord, bool isFirstLetter)
+        static public void insertWordInResultMatrix(Delta delta, Position position, string targetWord, bool isFirstLetter)
         {
             if (!isFirstLetter)
                 targetWord.Reverse();
@@ -160,7 +160,7 @@ namespace Word_Search_Solver
         /// <param name="targetWord">      word, which we a looking for </param>
         /// <param name="isFirstLetter">   determine, whether we are searching for straight word(true) or its reverse version(false)    </param>
         /// <returns> true, if method has found word, otherwise returns false </returns>
-        static bool findWord(Delta delta, Position position, string targetWord, bool isFirstLetter)
+        static public bool findWord(Delta delta, Position position, string targetWord, bool isFirstLetter)
         {
             
             int index, step, countFoundLetters=0;
@@ -188,10 +188,10 @@ namespace Word_Search_Solver
                 countFoundLetters++;
 
                 //we check until we've found word or we've reached the edge of matrix
-            } while (position.x > position.Min_x &&
-                        position.x < position.Max_x &&
-                        position.y > position.Min_y &&
-                        position.y < position.Max_y &&
+            } while (position.x >= position.Min_x &&
+                        position.x <= position.Max_x &&
+                        position.y >= position.Min_y &&
+                        position.y <= position.Max_y &&
                         countFoundLetters < targetWord.Length);
 
             if (countFoundLetters == targetWord.Length)
