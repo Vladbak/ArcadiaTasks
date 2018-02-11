@@ -77,11 +77,11 @@ namespace Word_Search_Solver
 
             for (int i=0; i< matrixVertSize; i++)
             {
-                position.x = i;
+                position.y = i;
 
                 for (int j=0; j<matrixHorizSize; j++ )
                 {
-                    position.y = j;
+                    position.x = j;
 
                     for (int k=0; k< targetWords.Length; k++)
                     {
@@ -142,11 +142,13 @@ namespace Word_Search_Solver
         /// <param name="isFirstLetter">   determine, whether we are inserting straight word(true) or its reverse version(false)    </param>
         static public void insertWordInResultMatrix(ref char[,] resultMatrix, Delta delta, Position position, string targetWord, bool isFirstLetter)
         {
+            //if we are inserting word backward, we should reverse it
             if (!isFirstLetter)
-                targetWord.Reverse();
+                targetWord = new string(targetWord.ToCharArray().Reverse().ToArray());
+                
             for (int i=0; i< targetWord.Length; i++)
             {
-                resultMatrix[position.x, position.y] = targetWord[i];
+                resultMatrix[ position.y, position.x] = targetWord[i];
                 position.x += delta.Horizontal;
                 position.y += delta.Vertical;
 
