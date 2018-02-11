@@ -1,14 +1,16 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Word_Search_Solver;
 
 namespace UnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class WordSearchSolverTests
     {
         [TestMethod]
         public void TestMethod1()
         {
+            
         }
     }
 }
