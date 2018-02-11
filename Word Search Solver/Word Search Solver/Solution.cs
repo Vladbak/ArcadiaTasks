@@ -122,7 +122,7 @@ namespace Word_Search_Solver
             {
                 Delta delta = new Delta(dHorizontalValues[i], dVerticalValues[i]);
 
-                if (findWord(Matrix, delta, position, targetWord, isFirstLetter))
+                if (findWordInDirection(Matrix, delta, position, targetWord, isFirstLetter))
                 {
                     insertWordInResultMatrix(ref resultMatrix, delta, position, targetWord, isFirstLetter);
                     return;
@@ -164,7 +164,7 @@ namespace Word_Search_Solver
         /// <param name="targetWord">      word, which we a looking for </param>
         /// <param name="isFirstLetter">   determine, whether we are searching for straight word(true) or its reverse version(false)    </param>
         /// <returns> true, if method has found word, otherwise returns false </returns>
-        static public bool findWord(char[,] Matrix, Delta delta, Position position, string targetWord, bool isFirstLetter)
+        static public bool findWordInDirection(char[,] Matrix, Delta delta, Position position, string targetWord, bool isFirstLetter)
         {
             
             int index, step, countFoundLetters=0;
@@ -182,7 +182,7 @@ namespace Word_Search_Solver
             do
             {
                 // if next symbol in our imaginary chain of letter isn't equal to symbol in target word, we immediatly stop searching
-                if (Matrix[position.x, position.y] != targetWord[index])
+                if (Matrix[position.y, position.x] != targetWord[index])
                 {
                     return false;
                 }
@@ -197,7 +197,7 @@ namespace Word_Search_Solver
                         position.y >= position.Min_y &&
                         position.y <= position.Max_y &&
                         countFoundLetters < targetWord.Length);
-
+            //if yes, we have found the word, else, we reached the end of matrix and should stop searching
             if (countFoundLetters == targetWord.Length)
                 return true;
             return false;
