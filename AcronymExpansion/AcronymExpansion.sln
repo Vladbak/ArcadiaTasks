@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcronymExpansion", "AcronymExpansion\AcronymExpansion.csproj", "{7A3D56BA-73A3-4B43-B555-05B91AFF0DB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcronymExpansion.Tests", "AcronymExpansion.Tests\AcronymExpansion.Tests.csproj", "{3C2EB9C1-F5FD-426D-BF83-BFDE47329955}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7A3D56BA-73A3-4B43-B555-05B91AFF0DB3} = {7A3D56BA-73A3-4B43-B555-05B91AFF0DB3}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +20,10 @@ Global
 		{7A3D56BA-73A3-4B43-B555-05B91AFF0DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A3D56BA-73A3-4B43-B555-05B91AFF0DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A3D56BA-73A3-4B43-B555-05B91AFF0DB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C2EB9C1-F5FD-426D-BF83-BFDE47329955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2EB9C1-F5FD-426D-BF83-BFDE47329955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2EB9C1-F5FD-426D-BF83-BFDE47329955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C2EB9C1-F5FD-426D-BF83-BFDE47329955}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
