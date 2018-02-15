@@ -55,13 +55,15 @@ namespace TextImages
 
 
             progressBar1.Maximum = blocksHorizLength * blocksVertLength;
-            float[] RedArray = new float[HorizSizeOfBlock * VertSizeOfBlock];
-            float[] GreenArray = new float[HorizSizeOfBlock * VertSizeOfBlock];
-            float[] BlueArray = new float[HorizSizeOfBlock * VertSizeOfBlock];
+            int[] RedArray = new int[HorizSizeOfBlock * VertSizeOfBlock];
+            int[] GreenArray = new int[HorizSizeOfBlock * VertSizeOfBlock];
+            int[] BlueArray = new int[HorizSizeOfBlock * VertSizeOfBlock];
 
             UInt32 pixel;
 
-            float AvgRed, AvgGreen, AvgBlue, AvgTotal;
+
+
+            int AvgRed, AvgGreen, AvgBlue, AvgTotal;
             int num;
 
             for (int indexBlockVert=0; indexBlockVert< blocksVertLength; indexBlockVert++ )
@@ -75,9 +77,9 @@ namespace TextImages
                             try {
                                 pixel = (UInt32)(inputImage.GetPixel(indexBlockHoriz * HorizSizeOfBlock + j, indexBlockVert * VertSizeOfBlock + i).ToArgb());
 
-                                RedArray[i * HorizSizeOfBlock + j] = (float)((pixel & 0x00FF0000) >> 16); // красный
-                                GreenArray[i * HorizSizeOfBlock + j] = (float)((pixel & 0x0000FF00) >> 8); // зеленый
-                                BlueArray[i * HorizSizeOfBlock + j] = (float)(pixel & 0x000000FF); // синий
+                                RedArray[i * HorizSizeOfBlock + j] = (int)((pixel & 0x00FF0000) >> 16); // красный
+                                GreenArray[i * HorizSizeOfBlock + j] = (int)((pixel & 0x0000FF00) >> 8); // зеленый
+                                BlueArray[i * HorizSizeOfBlock + j] = (int)(pixel & 0x000000FF); // синий
                             }
                             catch
                             {
@@ -85,10 +87,12 @@ namespace TextImages
                                 return "Error";
                             }
                         }
-                    AvgRed = RedArray.Average();
-                    AvgGreen = GreenArray.Average();
-                    AvgBlue = BlueArray.Average();
-                    AvgTotal = (AvgRed + AvgGreen + AvgBlue) / 3.0f;
+
+                    
+                    AvgRed = (int)RedArray.Average();
+                    AvgGreen = (int)GreenArray.Average();
+                    AvgBlue = (int)BlueArray.Average();
+                    AvgTotal = (int)((AvgRed + AvgGreen + AvgBlue) / 3.0f);
 
                     num = (int)AvgTotal / (int)Constants.FrameForEachSymbol;
                     result += Constants.ArrayOfDrawingSymbols[num];
@@ -104,7 +108,7 @@ namespace TextImages
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ASCIIOutput.Text = ConvertImageToASCII();
+            richTextBox1_ASCIIOutput.Text = ConvertImageToASCII();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
