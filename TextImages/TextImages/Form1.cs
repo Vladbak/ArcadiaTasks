@@ -108,7 +108,15 @@ namespace TextImages
 
         private void button2_Click(object sender, EventArgs e)
         {
-            richTextBox1_ASCIIOutput.Text = ConvertImageToASCII();
+            try
+            {
+                richTextBox1_ASCIIOutput.Text = ConvertImageToASCII();
+            }
+            catch
+            {
+                MessageBox.Show("No input image! Please, open image to create ASCII Art");
+                
+            }
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
