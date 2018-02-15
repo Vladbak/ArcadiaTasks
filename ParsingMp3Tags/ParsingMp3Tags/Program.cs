@@ -29,14 +29,34 @@ namespace ParsingMp3Tags
 
         }
 
+        /*
+Field      | TAG | song | artist | album | year | comment | genre
+Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
+------------------------------------------------------------------
+128 Bytes
+            
+            */
+
+
         public static string ProcessTagFromMP3File(string mp3FilePath)
         {
+            string result = "";
+            byte[] bufer = new byte[30];
             using (FileStream fs = new FileStream(mp3FilePath, FileMode.Open))
             {
-                isThereTag(fs);
+                if (!isThereTag(fs))
+                    return "No tag found";
+
+
+
             }
             return "1";
 
+        }
+
+        public static string BytesToString(byte[] bytes)
+        {
+            return System.Text.Encoding.UTF8.GetString(bytes);
         }
 
         public static bool isThereTag(FileStream fs)
@@ -47,7 +67,7 @@ namespace ParsingMp3Tags
                 fs.Seek(-128, SeekOrigin.End);
                 fs.Read(possibleTAG, 0, 3);
 
-                if (System.Text.Encoding.UTF8.GetString(possibleTAG).Equals("TAG"))
+                if (BytesToString(possibleTAG).Equals("TAG"))
                     return true;
                 else
                     return false;
