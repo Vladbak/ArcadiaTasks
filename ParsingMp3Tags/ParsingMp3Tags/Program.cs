@@ -20,7 +20,7 @@ namespace ParsingMp3Tags
 
                 if (File.Exists(mp3FilePath))
                 {
-                    Console.WriteLine(ProcessTagFromMP3File(mp3FilePath));
+                    Console.WriteLine(ProcessTagFromMP3File(mp3FilePath, GenreDictionary));
                 }
                 else
                 {
@@ -42,17 +42,18 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
 
         public static void CreateGenreDictionary(Hashtable gd)
         {
-            using (StreamReader sr = new StreamReader("Dictionary.txt"))
+            using (StreamReader sr = new StreamReader(@"../../Dictionary.txt"))
             {
                 int i = 0;
                 string genre;
-                while (!(genre = sr.ReadLine()).Equals(null))
+                while (!sr.EndOfStream) 
                 {
+                    genre = sr.ReadLine();
                     gd.Add(i++, genre);
                 }
             }
         }
-        public static string ProcessTagFromMP3File(string mp3FilePath)
+        public static string ProcessTagFromMP3File(string mp3FilePath,  Hashtable GenreDictionary)
         {
             string result = "";
             byte[] bufer30 = new byte[30];
@@ -84,7 +85,7 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
                     result += "Comment:\t" + BytesToString(bufer30) + "\n";
 
                     fs.Read(bufer1, 0, 1);
-                    result += "Genre:\t\t" + BytesToString(bufer1) + "\n";
+                    result += "Genre:\t\t" + GenreDictionary[0] + "\n";
 
 
 
