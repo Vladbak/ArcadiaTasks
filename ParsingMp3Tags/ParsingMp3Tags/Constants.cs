@@ -12,6 +12,7 @@ namespace ParsingMp3Tags
         public static string PathToDictionary = @"../../../Dictionary.txt";
         public static string PathToMp3WithoutTag = @"../../../Last Lynx - Alaska.mp3";
         public static string PathToMp3WithTag = @"../../../The Prodigy - Spitfire (Edit).mp3";
-
+        public static string PathToMp3WithTagButNoTrackNumber = @"../../../Elvis Presley - Let's Twist Again.mp3";
+        
     }
 }
