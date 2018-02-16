@@ -13,11 +13,21 @@ namespace ParsingMp3Tags
 
             foreach (var mp3FilePath in args)
             {
+                TagInformation tagInformation = new TagInformation();
                 Console.WriteLine(mp3FilePath);
                 if (File.Exists(mp3FilePath))
                 {
-                    Console.WriteLine(ProcessTagFromMP3File(mp3FilePath, GenreDictionary));
+                    ProcessTagFromMP3File(tagInformation, mp3FilePath, GenreDictionary);
+
+                    Console.WriteLine("Song title:\t{0}", tagInformation.Song1);
+                    Console.WriteLine("Artist:\t\t{0}", tagInformation.Artist1);
+                    Console.WriteLine("Album:\t\t{0}", tagInformation.Album1);
+                    Console.WriteLine("Year:\t\t{0}", tagInformation.Year1);
+                    Console.WriteLine("Comment:\t{0}", tagInformation.Comment1);
+                    Console.WriteLine("Genre:\t\t{0}", tagInformation.Genre1);
+                    Console.WriteLine("Track Number:\t{0}", tagInformation.TrackNumber1);
                     Console.WriteLine();
+
                 }
                 else
                 {
@@ -49,56 +59,65 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
                 }
             }
         }
-        public static string ProcessTagFromMP3File(string mp3FilePath,  Hashtable GenreDictionary)
+        public static TagInformation ProcessTagFromMP3File(TagInformation tagInformation, string mp3FilePath,  Hashtable GenreDictionary)
         {
-            string result = "";
             byte[] bufer30 = new byte[30];
             byte[] bufer4 = new byte[4];
             byte[] bufer1 = new byte[1];
             using (FileStream fs = new FileStream(mp3FilePath, FileMode.Open))
             {
                 if (!isThereTag(fs))
-                    return "No tag found";
+                {
+                    tagInformation.IsPresent = false;
+                    return tagInformation;
+                }
+               
 
-                try {
+                try
+                {
+                    tagInformation.IsPresent = true;
                     //we skip 3 first bytes of tag as we know it is "TAG", and we dont need it
                     fs.Seek(-125, SeekOrigin.End);
-
+                    //reading Song name
                     fs.Read(bufer30, 0, 30);
-                    result += "Song title:\t" + BytesToString(bufer30) + "\n";
-
+                    tagInformation.Song1 = BytesToString(bufer30);
+                    
+                    //reading artist name
                     fs.Read(bufer30, 0, 30);
-                    result += "Artist:\t\t" + BytesToString(bufer30) + "\n";
+                    tagInformation.Artist1 = BytesToString(bufer30) ;
 
+                    //reading album name
                     fs.Read(bufer30, 0, 30);
-                    result += "Album:\t\t" + BytesToString(bufer30) + "\n";
-
+                    tagInformation.Album1 = BytesToString(bufer30);
+                    
+                    //reading year
                     fs.Read(bufer4, 0, 4);
-                    result += "Year:\t\t" + BytesToString(bufer4) + "\n";
-        //            133212
+                    tagInformation.Year1 = BytesToString(bufer4) ;
 
+                    //reading comment and, if present, track number
                     fs.Read(bufer30, 0, 30);
                     if (bufer30[28] == 0 && bufer30[29] != 0)
                     {
-                        result += "Comment:\t" + BytesToString(bufer30).Substring(0, 28) + "\n";
-                        result += "Track Number:\t" + bufer30[29] + "\n";
-                    }else
-                        result += "Comment:\t" + BytesToString(bufer30) + "\n";
+                        tagInformation.Comment1 = BytesToString(bufer30).Substring(0, 28) ;
+                        tagInformation.TrackNumber1 = bufer30[29].ToString();
+                    }
+                    else
+                        tagInformation.Comment1 = BytesToString(bufer30) ;
 
+                    //reading genre
                     fs.Read(bufer1, 0, 1);
-                    result += "Genre:\t\t";
+                    
                     int GenreNumber;
                     if (Int32.TryParse(BytesToString(bufer1), out GenreNumber))
-                        result += GenreDictionary[GenreNumber] + "\n";
-                    else
-                        result += "\n";
+                        tagInformation.Genre1 = GenreDictionary[GenreNumber].ToString();
 
-                    return result;
+                    return tagInformation;
 
                 }
                 catch
                 {
-                    return "Tag is incorrect";
+                    tagInformation.IsValid = false;
+                    return tagInformation;
                 }
             }
 
@@ -106,7 +125,7 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
 
         public static string BytesToString(byte[] bytes)
         {
-            return System.Text.Encoding.Default.GetString(bytes);
+            return System.Text.Encoding.Default.GetString(bytes).TrimEnd(new char[] {' ', '\0'});
         }
 
         public static bool isThereTag(FileStream fs)
