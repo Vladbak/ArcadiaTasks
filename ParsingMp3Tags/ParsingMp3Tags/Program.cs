@@ -17,14 +17,15 @@ namespace ParsingMp3Tags
             string result="";
             foreach (var mp3FilePath in args)
             {
-
+                Console.WriteLine(mp3FilePath);
                 if (File.Exists(mp3FilePath))
                 {
                     Console.WriteLine(ProcessTagFromMP3File(mp3FilePath, GenreDictionary));
+                    Console.WriteLine();
                 }
                 else
                 {
-                    result = "Mp3 file not found";
+                    Console.WriteLine("Mp3 file not found\n");
                 }
 
                 
@@ -72,22 +73,30 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
                     result += "Song title:\t" + BytesToString(bufer30) + "\n";
 
                     fs.Read(bufer30, 0, 30);
-                    result += "Artist:\t\t\t" + BytesToString(bufer30) + "\n";
+                    result += "Artist:\t\t" + BytesToString(bufer30) + "\n";
 
                     fs.Read(bufer30, 0, 30);
-                    result += "Album:\t\t\t" + BytesToString(bufer30) + "\n";
+                    result += "Album:\t\t" + BytesToString(bufer30) + "\n";
 
                     fs.Read(bufer4, 0, 4);
                     result += "Year:\t\t" + BytesToString(bufer4) + "\n";
         //            133212
 
                     fs.Read(bufer30, 0, 30);
-                    result += "Comment:\t" + BytesToString(bufer30) + "\n";
+                    if (bufer30[28] == 0 && bufer30[29] != 0)
+                    {
+                        result += "Comment:\t" + BytesToString(bufer30).Substring(0, 28) + "\n";
+                        result += "Track Number:\t" + bufer30[29] + "\n";
+                    }else
+                        result += "Comment:\t" + BytesToString(bufer30) + "\n";
 
                     fs.Read(bufer1, 0, 1);
-                    result += "Genre:\t\t" + GenreDictionary[0] + "\n";
-
-
+                    result += "Genre:\t\t";
+                    int GenreNumber;
+                    if (Int32.TryParse(BytesToString(bufer1), out GenreNumber))
+                        result += GenreDictionary[GenreNumber] + "\n";
+                    else
+                        result += "\n";
 
                     return result;
 
@@ -97,13 +106,12 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
                     return "Tag is incorrect";
                 }
             }
-            return "1";
 
         }
 
         public static string BytesToString(byte[] bytes)
         {
-            return System.Text.Encoding.UTF8.GetString(bytes);
+            return System.Text.Encoding.Default.GetString(bytes);
         }
 
         public static bool isThereTag(FileStream fs)
