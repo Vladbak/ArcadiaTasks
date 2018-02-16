@@ -70,5 +70,74 @@ namespace ParsingMp3Tags.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void CheckMp3withTagAndNoTrackNumber()
+        {
+            TagInformation tag = new TagInformation();
+            Hashtable ht = new Hashtable();
+            Program.CreateGenreDictionary(ht);
+            Program.ProcessTagFromMP3File(tag, Constants.PathToMp3WithTagButNoTrackNumber, ht);
+            string expectedSong = "Let's Twist Again";
+            string expectedArtist = "Elvis Presley";
+            string expectedAlbum = "";
+            string expectedYear = "";
+            string expectedComment = "";
+            string expectedGenre = "";
+            string expectedTrackNumber = "";
+
+            string actualSong = tag.Song1;
+            string actualArtist = tag.Artist1;
+            string actualAlbum = tag.Album1;
+            string actualYear = tag.Year1;
+            string actualComment = tag.Comment1;
+            string actualGenre = tag.Genre1;
+            string actualTrackNumber = tag.TrackNumber1;
+
+            Assert.AreEqual(expectedSong, actualSong);
+            Assert.AreEqual(expectedArtist, actualArtist);
+            Assert.AreEqual(expectedAlbum, actualAlbum);
+            Assert.AreEqual(expectedYear, actualYear);
+            Assert.AreEqual(expectedComment, actualComment);
+            Assert.AreEqual(expectedGenre, actualGenre);
+            Assert.AreEqual(expectedTrackNumber, actualTrackNumber);
+        }
+
+        [TestMethod]
+        public void CheckMp3withTag()
+        {
+            TagInformation tag = new TagInformation();
+            Hashtable ht = new Hashtable();
+            Program.CreateGenreDictionary(ht);
+            Program.ProcessTagFromMP3File(tag, Constants.PathToMp3WithTag, ht);
+            string expectedSong = "Spitfire (Edit)";
+            string expectedArtist = "The Prodigy";
+            string expectedAlbum = "Spitfire [Single]";
+            string expectedYear = "2005";
+            string expectedComment = "                            ";
+            string expectedGenre = "";
+            string expectedTrackNumber = "1";
+
+            string actualSong = tag.Song1;
+            string actualArtist = tag.Artist1;
+            string actualAlbum = tag.Album1;
+            string actualYear = tag.Year1;
+            string actualComment = tag.Comment1;
+            string actualGenre = tag.Genre1;
+            string actualTrackNumber = tag.TrackNumber1;
+
+            Assert.AreEqual(expectedSong, actualSong);
+            Assert.AreEqual(expectedArtist, actualArtist);
+            Assert.AreEqual(expectedAlbum, actualAlbum);
+            Assert.AreEqual(expectedYear, actualYear);
+            Assert.AreEqual(expectedComment, actualComment);
+            Assert.AreEqual(expectedGenre, actualGenre);
+            Assert.AreEqual(expectedTrackNumber, actualTrackNumber);
+        }
+
+
+
+
+
+
     }
 }
