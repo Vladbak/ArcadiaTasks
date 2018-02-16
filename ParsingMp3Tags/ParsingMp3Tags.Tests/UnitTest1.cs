@@ -113,7 +113,7 @@ namespace ParsingMp3Tags.Tests
             string expectedArtist = "The Prodigy";
             string expectedAlbum = "Spitfire [Single]";
             string expectedYear = "2005";
-            string expectedComment = "                            ";
+            string expectedComment = "";
             string expectedGenre = "";
             string expectedTrackNumber = "1";
 

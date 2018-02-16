@@ -98,7 +98,7 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
                     fs.Read(bufer30, 0, 30);
                     if (bufer30[28] == 0 && bufer30[29] != 0)
                     {
-                        tagInformation.Comment1 = BytesToString(bufer30).Substring(0, 28) ;
+                        tagInformation.Comment1 = BytesToString(bufer30).Substring(0, 28).Trim(new char[] { ' '}) ;
                         tagInformation.TrackNumber1 = bufer30[29].ToString();
                     }
                     else
