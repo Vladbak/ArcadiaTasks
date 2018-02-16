@@ -53,6 +53,12 @@
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParsingMp3Tags\ParsingMp3Tags.csproj">
+      <Project>{7dfdd47b-b6dc-4741-85c5-bf6cd9d50cce}</Project>
+      <Name>ParsingMp3Tags</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

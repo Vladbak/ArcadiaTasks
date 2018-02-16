@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace ParsingMp3Tags
@@ -14,7 +11,6 @@ namespace ParsingMp3Tags
             Hashtable GenreDictionary = new Hashtable();
             CreateGenreDictionary(GenreDictionary);
 
-            string result="";
             foreach (var mp3FilePath in args)
             {
                 Console.WriteLine(mp3FilePath);
@@ -27,8 +23,7 @@ namespace ParsingMp3Tags
                 {
                     Console.WriteLine("Mp3 file not found\n");
                 }
-
-                
+  
             }
 
         }
