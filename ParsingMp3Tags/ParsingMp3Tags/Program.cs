@@ -38,7 +38,7 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
 
         public static void CreateGenreDictionary(Hashtable gd)
         {
-            using (StreamReader sr = new StreamReader(@"../../Dictionary.txt"))
+            using (StreamReader sr = new StreamReader(@"../../../Dictionary.txt"))
             {
                 int i = 0;
                 string genre;
