@@ -36,7 +36,7 @@ namespace ParsingMp3Tags.Tests
 
             string expected;
             
-            using (StreamReader sr = new StreamReader(@"../../../Dictionary.txt"))
+            using (StreamReader sr = new StreamReader(Constants.PathToDictionary))
             {
                 expected=sr.ReadLine();
             }
@@ -45,6 +45,29 @@ namespace ParsingMp3Tags.Tests
 
             Assert.AreEqual(expected, actual);
 
+        }
+
+        [TestMethod]
+        public void CheckIsThereTagMethodWithNoTagFile()
+        {
+            bool expected = false;
+            bool actual;
+            using (FileStream fs = new FileStream(Constants.PathToMp3WithoutTag, FileMode.Open))
+            {
+                actual = Program.isThereTag(fs);
+            }
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckIsThereTagMethodWithTaggedFile()
+        {
+            bool expected = true;
+            bool actual;
+            using (FileStream fs = new FileStream(Constants.PathToMp3WithTag, FileMode.Open))
+            {
+                actual = Program.isThereTag(fs);
+            }
+            Assert.AreEqual(expected, actual);
         }
 
     }
