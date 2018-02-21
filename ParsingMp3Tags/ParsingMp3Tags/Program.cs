@@ -19,14 +19,28 @@ namespace ParsingMp3Tags
                 {
                     ProcessTagFromMP3File(tagInformation, mp3FilePath, GenreDictionary);
 
-                    Console.WriteLine("Song title:\t{0}", tagInformation.Song1);
-                    Console.WriteLine("Artist:\t\t{0}", tagInformation.Artist1);
-                    Console.WriteLine("Album:\t\t{0}", tagInformation.Album1);
-                    Console.WriteLine("Year:\t\t{0}", tagInformation.Year1);
-                    Console.WriteLine("Comment:\t{0}", tagInformation.Comment1);
-                    Console.WriteLine("Genre:\t\t{0}", tagInformation.Genre1);
-                    Console.WriteLine("Track Number:\t{0}", tagInformation.TrackNumber1);
-                    Console.WriteLine();
+                    if (!tagInformation.IsPresent)
+                    {
+                        Console.WriteLine("No tag found");
+                        continue;
+                    }
+                    else if (!tagInformation.IsValid)
+                    {
+                        Console.WriteLine("tag isn't correct");
+                        continue;
+                    }
+                    else
+                    {
+
+                        Console.WriteLine("Song title:\t{0}", tagInformation.Song1);
+                        Console.WriteLine("Artist:\t\t{0}", tagInformation.Artist1);
+                        Console.WriteLine("Album:\t\t{0}", tagInformation.Album1);
+                        Console.WriteLine("Year:\t\t{0}", tagInformation.Year1);
+                        Console.WriteLine("Comment:\t{0}", tagInformation.Comment1);
+                        Console.WriteLine("Genre:\t\t{0}", tagInformation.Genre1);
+                        Console.WriteLine("Track Number:\t{0}", tagInformation.TrackNumber1);
+                        Console.WriteLine();
+                    }
 
                 }
                 else
@@ -38,27 +52,28 @@ namespace ParsingMp3Tags
 
         }
 
-        /*
-Field      | TAG | song | artist | album | year | comment | genre
-Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
-------------------------------------------------------------------
-128 Bytes
-            
-            */
-
+            /// <summary>
+            /// Creates hashtable from words in Dictionary.txt file in resources
+            /// </summary>
+            /// <param name="gd"> hashtable</param>
         public static void CreateGenreDictionary(Hashtable gd)
         {
-            using (StreamReader sr = new StreamReader(Constants.PathToDictionary))
+            string[] GenreArray =  Dictionary.DictionaryString.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                
+            for (int i=0; i<GenreArray.Length; i++)
             {
-                int i = 0;
-                string genre;
-                while (!sr.EndOfStream) 
-                {
-                    genre = sr.ReadLine();
-                    gd.Add(i++, genre);
-                }
+                gd.Add(i, GenreArray[i]);
             }
+         
         }
+
+        /// <summary>
+        ///  method retrieve information from mp3 tag, if it presents in mp3 file
+        /// </summary>
+        /// <param name="tagInformation"> class instance for tag details</param>
+        /// <param name="mp3FilePath"> path to mp3 file</param>
+        /// <param name="GenreDictionary"> hashtable of genres</param>
+        /// <returns></returns>
         public static TagInformation ProcessTagFromMP3File(TagInformation tagInformation, string mp3FilePath,  Hashtable GenreDictionary)
         {
             byte[] bufer30 = new byte[30];
@@ -123,11 +138,21 @@ Byte Width | 3   | 30   | 30     | 30    | 4    | 30      | 1
 
         }
 
+        /// <summary>
+        /// converts array of bytes to String
+        /// </summary>
+        /// <param name="bytes"> array to convert</param>
+        /// <returns></returns>
         public static string BytesToString(byte[] bytes)
         {
             return System.Text.Encoding.Default.GetString(bytes).TrimEnd(new char[] {' ', '\0'});
         }
 
+        /// <summary>
+        /// checks for TAG word in the end of file, opened in filestream fs
+        /// </summary>
+        /// <param name="fs"></param>
+        /// <returns></returns>
         public static bool isThereTag(FileStream fs)
         {
             try
